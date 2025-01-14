@@ -3,7 +3,10 @@ import time
 import os
 from dotenv import load_dotenv
 
-NS_API_KEY = "39d975214e561cb5ccc860eb4"
+load_dotenv()
+
+# NS_API_KEY = "39d975214e561cb5ccc860eb4"
+NS_API_KEY = os.getenv("NS_API_KEY")
 
 
 def ns_list():
@@ -34,3 +37,5 @@ def ns_list():
 
 # def gd_list():
 #     headers = {f"'Authorization': 'sso-key {GD_API_KEY}:{GD_API_SECRET}'"}
+
+ns_list()
