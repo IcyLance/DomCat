@@ -1,29 +1,39 @@
 # DomCat - Domain Categorization
    
-need an API key from NameSilo   
+Need an API key from NameSilo   
 https://www.namesilo.com/account/api-manager   
 
-and also one from cloudflare, but we will need a token here.   
-make sure it has the permissions to read account settings and read from Intel.   
-need to read account settings to get account ID for categorization call.   
+And also one from cloudflare, but we will need a token here.   
+Make sure it has the permissions to:
+- Read account settings
+- Read from Intel.   
+
+Need to read account settings to get account ID for categorization call.   
 https://dash.cloudflare.com/8c1b8ff70734a72331df6d7f2d6625e4/api-tokens   
 https://developers.cloudflare.com/security-center/intel-apis/limits/
 
    
 ### To do list:
-    commandize code   
+- [] Work on read me
 
-    make options   
-        option to use domains from file   
-        option to write domains to file   
-        option to just check a domain's categorization   
-        option to check a list of domains categorization (piping and file input)  
-        option to say who's accountID to use if multiple   
-            logic to handle if there are multiple and no accountID was specified  
+- [] Commandize code   
 
-    make list of categorized domains with all the info   
+- [] Make options   
+    - [] Option to use domains from file   
+    - [] Option to write domains to file   
+    - [] Option to just check a domain's categorization   
+    - [] Option to check a list of domains categorization (piping and file input)  
+    - [] Option to say who's accountID to use if multiple   
+        - [] Logic to handle if there are multiple and no accountID was specified  
+    - [] Option to say what categorization you are looking for
+    - [] Option for how long to look?
+    - [] Option for whoisxml cat check
+        - [] Both for checking final domain picked and to replace cloudflare as the main
+    - [] Option for whoisxml rep check 
 
-    make able to wait for an interval rather than time.sleep   
+- [] Make it to only get 50 domains at a time and see if they are what we need before continuing
+
+- [X] Make list of categorized domains with all the info
 
 
 ### proposed code for install script
