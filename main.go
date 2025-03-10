@@ -22,54 +22,48 @@ func main() {
 			}
 
 			// // get list of expired domains from Namesilo
-			fmt.Println("Getting domains from Namesilo...")
 			page_num := 1
 			domList, err := NsList(page_num)
 			if err != nil {
 				log.Fatalf("Error getting domains: %v", err)
 			}
-			fmt.Println("Got domains from Namesilo")
 
 			// compiling all info into 1 structure
 			// will hold domain info and categorization for easy access
-			var domains = make([]Domain, len(domList))
 			var domSL = make([]string, len(domList))
 			for i, k := range domList {
-				domains[i].Details = k
-				if i < 25 {
-					domSL[i] = k.Domain
-				}
+				domSL[i] = k.Domain
 			}
 
 			// get categorization for domains
 			// place them in the struct with corresponding domain
-			fmt.Println("Getting categorization...")
-			cat, err := CheckCatBulk(domSL)
+			cats, err := CheckCatBulk(domSL)
 			if err != nil {
 				log.Fatalf("Error getting categorization: %v", err)
-			} else {
-				fmt.Println("Finished getting categorization")
 			}
 
-			for _, k := range cat {
-				fmt.Print(k.Domain, ": ")
-				fmt.Println(k.ContentCategories)
-			}
+			var domains []Domain
 
-			// collect categorization into main variable for storage
-			for _, j := range cat {
-				for i, k := range domains {
-					if j.Domain == k.Details.Domain {
-						domains[i].Categories = j.ContentCategories
+			// collect information into main variable for easy access
+			for _, cat := range cats {
+				for _, dom := range domList {
+					if len(cat.Categories) != 0 {
+						if cat.Domain == dom.Domain {
+							domains = append(domains, Domain{
+								Details:    dom,
+								Categories: cat.Categories,
+							})
+						}
 					}
 				}
 			}
 
-			fmt.Println("==============================")
-
-			for _, k := range domains {
-				fmt.Print(k.Details.Domain, ": ")
-				fmt.Println(k.Categories)
+			for i, k := range domains {
+				fmt.Print(i, ": ", k.Details.Domain, " - ")
+				for _, l := range k.Categories {
+					fmt.Print(l, ", ")
+				}
+				fmt.Println()
 			}
 
 			return nil

@@ -1,8 +1,6 @@
 package main
 
-import "github.com/cloudflare/cloudflare-go"
-
-type Info struct {
+type Details struct {
 	ID               int     `json:"id"`
 	LeaderUserID     int     `json:"leaderUserId"`
 	OwnerUserID      int     `json:"ownerUserId"`
@@ -28,13 +26,18 @@ type NSResp struct {
 		IP        string `json:"ip"`
 	} `json:"request"`
 	Reply struct {
-		Code   int    `json:"code"`
-		Detail string `json:"detail"`
-		Body   []Info `json:"body"`
+		Code   int       `json:"code"`
+		Detail string    `json:"detail"`
+		Body   []Details `json:"body"`
 	} `json:"reply"`
 }
 
 type Domain struct {
-	Details    Info
-	Categories []cloudflare.ContentCategories
+	Details    Details
+	Categories []string
+}
+
+type CheckCatReturn struct {
+	Domain     string
+	Categories []string
 }

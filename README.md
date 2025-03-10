@@ -16,7 +16,7 @@ https://developers.cloudflare.com/security-center/intel-apis/limits/
 ### To do list:
 - [] Work on read me
 
-- [] Commandize code   
+- [] Commandize code
 
 - [] Make options   
     - [] Option to use domains from file   
@@ -30,8 +30,9 @@ https://developers.cloudflare.com/security-center/intel-apis/limits/
     - [] Option for whoisxml cat check
         - [] Both for checking final domain picked and to replace cloudflare as the main
     - [] Option for whoisxml rep check 
+    - [] Option for categorization we are looking for
 
-- [] Make it to only get 50 domains at a time and see if they are what we need before continuing
+- [] See if 25 have what we need they before continuing doing 25 at a shot till we find a good domain
 
 - [X] Make list of categorized domains with all the info
 

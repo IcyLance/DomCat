@@ -11,14 +11,14 @@ import (
 	"github.com/cloudflare/cloudflare-go"
 )
 
-func NsList(page_num int) ([]Info, error) {
+func NsList(page_num int) ([]Details, error) {
 	NS_API_KEY := os.Getenv("NS_API_KEY")
 	headers := map[string]string{
 		"Accept":       "application/json",
 		"Content-Type": "application/json",
 	}
 
-	var domains []Info
+	var domains []Details
 
 	client := &http.Client{}
 
@@ -66,11 +66,11 @@ func NsList(page_num int) ([]Info, error) {
 	return domains, nil
 }
 
-func CheckCat(domain string) ([]cloudflare.ContentCategories, error) {
+func CheckCat(domain string) (CheckCatReturn, error) {
 	// create instance of API using token
 	api, err := cloudflare.NewWithAPIToken(os.Getenv("CLOUDFLARE_API_TOKEN"))
 	if err != nil {
-		return nil, err
+		return CheckCatReturn{}, err
 	}
 
 	//create blank coontext for API calls
@@ -80,7 +80,7 @@ func CheckCat(domain string) ([]cloudflare.ContentCategories, error) {
 	var paramsA cloudflare.AccountsListParams
 	accounts, _, err := api.Accounts(ctx, paramsA)
 	if err != nil {
-		return nil, err
+		return CheckCatReturn{}, err
 	}
 
 	// initialize parameters for api function call
@@ -92,13 +92,24 @@ func CheckCat(domain string) ([]cloudflare.ContentCategories, error) {
 	// returns more data than just categorization
 	info, err := api.IntelligenceDomainDetails(ctx, paramsD)
 	if err != nil {
-		return nil, err
+		return CheckCatReturn{}, err
 	}
 
-	return info.ContentCategories, nil
+	var out CheckCatReturn
+
+	var categories []string
+	for _, category := range info.ContentCategories {
+		categories = append(categories, category.Name)
+	}
+	out = CheckCatReturn{
+		Domain:     info.Domain,
+		Categories: categories,
+	}
+
+	return out, nil
 }
 
-func CheckCatBulk(domains []string) ([]cloudflare.DomainDetails, error) {
+func CheckCatBulk(domains []string) ([]CheckCatReturn, error) {
 	// create instance of API using token
 	api, err := cloudflare.NewWithAPIToken(os.Getenv("CLOUDFLARE_API_TOKEN"))
 	if err != nil {
@@ -124,8 +135,23 @@ func CheckCatBulk(domains []string) ([]cloudflare.DomainDetails, error) {
 	// returns more data than just categorization
 	info, err := api.IntelligenceBulkDomainDetails(ctx, paramsD)
 	if err != nil {
-		return info, err
+		return nil, err
 	}
 
-	return info, nil
+	var out []CheckCatReturn
+
+	// putting the categorizies in a more accessible form
+	// also dont need some of the info so compacting down a bit
+	for _, k := range info {
+		var categories []string
+		for _, category := range k.ContentCategories {
+			categories = append(categories, category.Name)
+		}
+		out = append(out, CheckCatReturn{
+			Domain:     k.Domain,
+			Categories: categories,
+		})
+	}
+
+	return out, nil
 }
