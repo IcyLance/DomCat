@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"strings"
 
 	"github.com/cloudflare/cloudflare-go"
 )
@@ -154,4 +155,22 @@ func CheckCatBulk(domains []string) ([]CheckCatReturn, error) {
 	}
 
 	return out, nil
+}
+
+func RemoveExplicitDomains(domains []Domain) ([]Domain, error) {
+	for i, domain := range domains {
+		for _, category := range domain.Categories {
+			if strings.ToLower(category) == "pornography" || strings.ToLower(category) == "adult themes" {
+				if i < 0 || i >= len(domains) {
+					continue
+				}
+
+				// Remove the element at index by slicing around it
+				domains = append(domains[:i], domains[i+1:]...)
+
+			}
+		}
+	}
+
+	return domains, nil
 }

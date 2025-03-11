@@ -58,6 +58,11 @@ func main() {
 				}
 			}
 
+			domains, err = RemoveExplicitDomains(domains)
+			if err != nil {
+				log.Fatalf("Error removing explicit domains: %v", err)
+			}
+
 			for i, k := range domains {
 				fmt.Print(i, ": ", k.Details.Domain, " - ")
 				for _, l := range k.Categories {
