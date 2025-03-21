@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"context"
 	"encoding/json"
 	"errors"
@@ -11,6 +12,15 @@ import (
 
 	"github.com/cloudflare/cloudflare-go"
 )
+
+func PrintBanner() {
+	fmt.Println(`       __                ______      __ 
+  ____/ /___  ____ ___  / ____/___ _/ /_
+ / __  / __ \/ __ ` + "`" + `__ \/ /   / __ ` + `/  __/
+/ /_/ / /_/ / / / / / / /___/ /_/ / /_  
+\__,_/\____/_/ /_/ /_/\____/\__,_/\__/  
+	`)
+}
 
 func NsList(page_num int) ([]Details, error) {
 	NS_API_KEY := os.Getenv("NS_API_KEY")
@@ -167,10 +177,39 @@ func RemoveExplicitDomains(domains []Domain) ([]Domain, error) {
 
 				// Remove the element at index by slicing around it
 				domains = append(domains[:i], domains[i+1:]...)
-
 			}
 		}
 	}
 
 	return domains, nil
+}
+
+func promptYesNo(defaultYes bool) bool {
+	// Display the prompt with either "Yes" or "No" capitalized depending on the default
+	if defaultYes {
+		fmt.Print("Continue? [Y/n]: ")
+	} else {
+		fmt.Print("Continue? [y/N]: ")
+	}
+
+	// Read the input from the user
+	reader := bufio.NewReader(os.Stdin)
+	input, _ := reader.ReadString('\n')
+	input = strings.TrimSpace(strings.ToLower(input))
+
+	// Check the user's response
+	if input == "" {
+		// Return the default value if no input is provided
+		return defaultYes
+	}
+
+	// Return true for "yes" and false for "no"
+	if input == "y" || input == "yes" {
+		return true
+	} else if input == "n" || input == "no" {
+		return false
+	}
+
+	// If the input was invalid, assume the default
+	return defaultYes
 }

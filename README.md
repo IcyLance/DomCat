@@ -12,6 +12,20 @@ Need to read account settings to get account ID for categorization call.
 https://dash.cloudflare.com/8c1b8ff70734a72331df6d7f2d6625e4/api-tokens   
 https://developers.cloudflare.com/security-center/intel-apis/limits/
 
+## How To
+Make sure you are in the DomCat Directory.
+Build the program   
+```bash
+go build
+```
+Run the program.   
+```bash
+./domCat
+```
+When you find a domain you like, say no to continue.   
+Input the number coresponding to the domain you like.   
+The url where you can find that domain will be displayed.   
+Follow the URL and register your domain!   
    
 ### To do list:
 - [] Work on read me
@@ -20,7 +34,8 @@ https://developers.cloudflare.com/security-center/intel-apis/limits/
 
 - [] Make options   
     - [] Option to use domains from file   
-    - [] Option to write domains to file   
+    - [] Option to write domain info to file   
+        - [] options for both all domains and only the one that is selected
     - [] Option to just check a domain's categorization   
     - [] Option to check a list of domains categorization (piping and file input)  
     - [] Option to say who's accountID to use if multiple   
@@ -31,10 +46,6 @@ https://developers.cloudflare.com/security-center/intel-apis/limits/
         - [] Both for checking final domain picked and to replace cloudflare as the main
     - [] Option for whoisxml rep check 
     - [] Option for categorization we are looking for
-
-- [] See if 25 have what we need they before continuing doing 25 at a shot till we find a good domain
-
-- [X] Make list of categorized domains with all the info
 
 
 ### proposed code for install script
