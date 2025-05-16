@@ -1,5 +1,12 @@
 # DomCat - Domain Categorization
-   
+```
+    ____                  ______      __ 
+   / __ \____  ____ ___  / ____/___ _/ /_
+  / / / / __ \/ __ `__ \/ /   / __ `/ __/
+ / /_/ / /_/ / / / / / / /___/ /_/ / /_  
+/_____/\____/_/ /_/ /_/\____/\__,_/\__/
+```
+
 Need an API key from NameSilo   
 https://www.namesilo.com/account/api-manager   
 
@@ -48,7 +55,7 @@ Follow the URL and register your domain!
     - [] Option for categorization we are looking for
 
 
-### proposed code for install script
+### proposed code for install script (UNTESTED)
     #!/bin/bash
 
     # Build and install the Go tool
