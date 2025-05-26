@@ -172,3 +172,4 @@ cython_debug/
 .pypirc
 
 domCat
+domcat.exe
