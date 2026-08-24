@@ -1,0 +1,21 @@
+services:
+  domcat:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: domcat:latest
+    container_name: domcat
+
+    # Make DomCat interactive
+    stdin_open: true
+    tty: true
+
+    # Make .env available both as environment variables
+    # and as the physical file DomCat expects.
+    env_file:
+      - .env
+
+    volumes:
+      - ./.env:/app/.env:ro
+
+    restart: "no"

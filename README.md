@@ -7,34 +7,94 @@
 /_____/\____/_/ /_/ /_/\____/\__,_/\__/
 ```
 
-Need an API key from NameSilo   
+Generate a NameSilo API key:   
 https://www.namesilo.com/account/api-manager   
 
-And also one from cloudflare, but we will need a token here.   
-Make sure it has the permissions to:
-- Read account settings
-- Read from Intel.   
 
-Need to read account settings to get account ID for categorization call.   
-https://dash.cloudflare.com/8c1b8ff70734a72331df6d7f2d6625e4/api-tokens   
-https://developers.cloudflare.com/security-center/intel-apis/limits/
+Generate Cloudflare API Token:
+https://dash.cloudflare.com/profile/api-tokens
 
-## How To
-Make sure you are in the DomCat Directory.
-Build the program   
+Ensure that it has the following Read permissions:
+- Account.Intel
+- Account.Account   
+
+Cloudflare Threat Intelligence APIs Limits: https://developers.cloudflare.com/security-center/intel-apis/limits/
+- 100 calls/month on Free plan as of 2026-08-24
+
+## Execution
+
+Make sure you are in the DomCat directory.
+
+### Option 1: Build/Run from Source Directly
+
+Build the program:
+
 ```bash
 go build
 ```
-Run the program.   
+
+Run the program:
+
 ```bash
 ./domCat
 ```
-When you find a domain you like, say no to continue.   
-Input the number coresponding to the domain you like.   
-The url where you can find that domain will be displayed.   
-Follow the URL and register your domain!   
-   
-### To do list:
+
+#### proposed code for install script (UNTESTED)
+    #!/bin/bash
+
+    # Build and install the Go tool
+    echo "Installing goTool..."
+
+    go install ./cmd/goTool
+
+    # Make sure $GOBIN or $GOPATH/bin is in the user's PATH
+    if ! echo "$PATH" | grep -q "$(go env GOPATH)/bin"; then
+    echo 'export PATH=$PATH:$(go env GOPATH)/bin' >> ~/.bashrc
+    echo "Added goTool to your PATH. Please restart your shell or run 'source ~/.bashrc'."
+    else
+    echo "goTool is installed and ready to use."
+    fi
+
+### Option 2: Run with Docker
+
+Docker provides a convenient way to run DomCat without installing Go or its dependencies locally.
+
+Make sure Docker and Docker Compose are installed.
+
+Create a `.env` file in the DomCat directory containing your API credentials:
+
+```dotenv
+NS_API_KEY=your_namesilo_api_key
+CLOUDFLARE_API_TOKEN=your_cloudflare_api_token
+```
+
+Build the Docker image:
+
+```bash
+docker compose build
+```
+
+Run DomCat:
+
+```bash
+docker compose run --rm domcat
+```
+
+The `.env` file is mounted into the container as read-only and is not included in the Docker image.
+
+---
+
+DomCat will display available domains as they are discovered.
+
+When you find a domain you want to register:
+
+1. Enter `n` when prompted to stop searching.
+2. Enter the number corresponding to the domain you want.
+3. DomCat will display the URL where you can register the domain.
+4. Open the URL in your browser and complete the registration process.
+
+
+## To do list:
 - [] Work on read me
 
 - [] Commandize code
@@ -53,20 +113,3 @@ Follow the URL and register your domain!
         - [] Both for checking final domain picked and to replace cloudflare as the main
     - [] Option for whoisxml rep check 
     - [] Option for categorization we are looking for
-
-
-### proposed code for install script (UNTESTED)
-    #!/bin/bash
-
-    # Build and install the Go tool
-    echo "Installing goTool..."
-
-    go install ./cmd/goTool
-
-    # Make sure $GOBIN or $GOPATH/bin is in the user's PATH
-    if ! echo "$PATH" | grep -q "$(go env GOPATH)/bin"; then
-    echo 'export PATH=$PATH:$(go env GOPATH)/bin' >> ~/.bashrc
-    echo "Added goTool to your PATH. Please restart your shell or run 'source ~/.bashrc'."
-    else
-    echo "goTool is installed and ready to use."
-    fi
